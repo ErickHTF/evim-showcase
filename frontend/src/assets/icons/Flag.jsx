@@ -1,0 +1,1 @@
+export const Flag = (p) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 22V4M4 4h14l-3 5 3 5H4"/></svg>;

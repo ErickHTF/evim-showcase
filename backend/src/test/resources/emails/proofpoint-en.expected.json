@@ -1,0 +1,13 @@
+[ {
+  "author" : null,
+  "company" : null,
+  "date" : null,
+  "bodyLength" : 85,
+  "bodyPreview" : "Hi team,\n\nPlease find attached the latest report for review.\n\nThanks,\nExternal Vendor"
+}, {
+  "author" : "John Doe",
+  "company" : "AcmeCorp",
+  "date" : "2026-04-13T14:13",
+  "bodyLength" : 49,
+  "bodyPreview" : "Initial request: please share the latest figures."
+} ]

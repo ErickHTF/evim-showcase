@@ -1,0 +1,19 @@
+[ {
+  "author" : null,
+  "company" : null,
+  "date" : null,
+  "bodyLength" : 87,
+  "bodyPreview" : "Boa tarde,\n\nConforme alinhado, segue retorno sobre a demanda solicitada.\n\nCliente Final"
+}, {
+  "author" : "João da Silva",
+  "company" : "Portal",
+  "date" : "2026-04-13T14:13",
+  "bodyLength" : 73,
+  "bodyPreview" : "Olá time,\n\nPor favor, validem o processo descrito no anexo e me retornem."
+}, {
+  "author" : "Maria Souza",
+  "company" : "Vendor",
+  "date" : "2026-04-12T09:30",
+  "bodyLength" : 58,
+  "bodyPreview" : "Recebido. Vamos analisar internamente e retornar em breve."
+} ]

@@ -1,0 +1,13 @@
+[ {
+  "author" : null,
+  "company" : null,
+  "date" : null,
+  "bodyLength" : 123,
+  "bodyPreview" : "Olá time, segue retorno do cliente sobre o Portal de Atendimento que mencionaram.\n\nDocumento Resultado.xlsx anexado abaixo."
+}, {
+  "author" : "Maria Aparecida Silva",
+  "company" : null,
+  "date" : "2026-04-13T10:00",
+  "bodyLength" : 28,
+  "bodyPreview" : "Bom dia, conforme combinado."
+} ]

@@ -1,0 +1,1 @@
+export const Triage = (p) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 6h18M7 12h10M11 18h2"/></svg>;

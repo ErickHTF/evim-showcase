@@ -1,0 +1,13 @@
+[ {
+  "author" : null,
+  "company" : null,
+  "date" : null,
+  "bodyLength" : 9,
+  "bodyPreview" : "Boa noite"
+}, {
+  "author" : "Carlos Mendes",
+  "company" : "TI",
+  "date" : "2026-04-13T22:05",
+  "bodyLength" : 66,
+  "bodyPreview" : "Bom dia, conforme conversado, encaminho a documentação solicitada."
+} ]

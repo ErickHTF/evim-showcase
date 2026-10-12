@@ -1,0 +1,100 @@
+﻿.tooltipContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: var(--panel);
+  color: var(--fg-2);
+  padding: 7px 11px;
+  border-radius: var(--r-2, 6px);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  white-space: nowrap;
+  max-width: 280px;
+  overflow-wrap: break-word;
+  pointer-events: none;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10), 0 1px 3px rgba(0, 0, 0, 0.06);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.arrow {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+.position-top {
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+.position-top.visible {
+  transform: translateX(-50%) translateY(0);
+}
+.position-top .arrow {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%) rotate(45deg);
+  border-top: none;
+  border-left: none;
+}
+.position-bottom {
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+.position-bottom.visible {
+  transform: translateX(-50%) translateY(0);
+}
+.position-bottom .arrow {
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(50%) rotate(45deg);
+  border-bottom: none;
+  border-right: none;
+}
+.position-left {
+  right: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(4px);
+}
+.position-left.visible {
+  transform: translateY(-50%) translateX(0);
+}
+.position-left .arrow {
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(-50%) rotate(45deg);
+  border-left: none;
+  border-bottom: none;
+}
+.position-right {
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%) translateX(-4px);
+}
+.position-right.visible {
+  transform: translateY(-50%) translateX(0);
+}
+.position-right .arrow {
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(50%) rotate(45deg);
+  border-right: none;
+  border-top: none;
+}

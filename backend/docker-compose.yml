@@ -1,0 +1,15 @@
+services:
+
+  postgres:
+    image: postgres:13.22
+    container_name: mailManager
+    restart: always
+    environment:
+      POSTGRES_USER: evim
+      POSTGRES_PASSWORD: evim
+      POSTGRES_DB: Manager_DB
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_data:

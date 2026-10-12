@@ -1,0 +1,87 @@
+.rail {
+  width: 56px;
+  flex-shrink: 0;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 4px;
+  z-index: 11;
+}
+
+.railLogo {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-2);
+  background: linear-gradient(135deg, var(--green-500), var(--green-700));
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  box-shadow: var(--sh-sm);
+  cursor: pointer;
+}
+
+.railLogoSvg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+
+.railBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-3);
+  position: relative;
+  transition: all 160ms;
+}
+
+.railBtn:hover {
+  background: var(--hover);
+  color: var(--fg);
+}
+
+.railBtn.active {
+  background: var(--active);
+  color: var(--green-700);
+}
+
+.railBtn.danger:hover {
+  background: var(--red-50);
+  color: var(--red-500);
+}
+
+.count {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 4px;
+  background: var(--yellow-400);
+  color: var(--yellow-900);
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--bg);
+}
+
+.spacer {
+  flex: 1;
+}
+
+@media (max-width: 480px) {
+  .rail {
+    display: none;
+  }
+}

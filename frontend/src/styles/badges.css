@@ -1,0 +1,132 @@
+﻿.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 7px;
+  border-radius: var(--r-pill);
+  font-size: 10.5px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: var(--pill-bg, transparent);
+  color: var(--pill-color, inherit);
+  border-color: var(--pill-border, transparent);
+}
+
+.status-pill .sdot { 
+  width: 6px; 
+  height: 6px; 
+  border-radius: 50%; 
+}
+
+.status-pill.open { 
+  background: var(--yellow-50); 
+  color: var(--yellow-900); 
+  border-color: var(--yellow-100); 
+}
+
+.status-pill.open .sdot { 
+  background: var(--yellow-500); 
+}
+
+.status-pill.progress { 
+  background: var(--blue-50); 
+  color: var(--blue-500); 
+  border-color: #cad9e4; 
+}
+
+.status-pill.progress .sdot { 
+  background: var(--blue-500); 
+}
+
+.status-pill.review { 
+  background: #efeaff; 
+  color: #4a39a0; 
+  border-color: #dfd6fb; 
+}
+
+.status-pill.review .sdot { 
+  background: #6b52d5; 
+}
+
+.status-pill.blocked { 
+  background: var(--red-50); 
+  color: var(--red-500); 
+  border-color: #f3d2c2; 
+}
+
+.status-pill.blocked .sdot { 
+  background: var(--red-500); 
+}
+
+.status-pill.done { 
+  background: var(--green-50); 
+  color: var(--green-700); 
+  border-color: var(--green-100); 
+}
+
+.status-pill.done .sdot { 
+  background: var(--green-500); 
+}
+.priority {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10.5px;
+  color: var(--fg-3);
+  font-weight: 500;
+}
+
+.priority svg { 
+  width: 11px; 
+  height: 11px; 
+}
+
+.priority.p1 { 
+  color: var(--red-500); 
+}
+
+.priority.p2 { 
+  color: var(--yellow-600); 
+}
+
+.priority.p3 { 
+  color: var(--fg-3); 
+}
+
+.priority.p4 { 
+  color: var(--fg-4); 
+}
+.label-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: var(--r-1);
+  font-size: 10.5px;
+  background: var(--bg-muted);
+  color: var(--fg-3);
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+.ticket-sla-chip {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  padding: 1px 6px;
+  border-radius: var(--r-1);
+  color: var(--yellow-900);
+  background: var(--yellow-100);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.ticket-sla-chip.red {
+  color: var(--red-500);
+  background: var(--red-50);
+}
+
+.ticket-sla-chip.green {
+  color: var(--green-700);
+  background: var(--green-50);
+}

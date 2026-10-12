@@ -1,0 +1,1 @@
+export const Sort = (p) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M7 3v18M3 7l4-4 4 4M17 21V3M21 17l-4 4-4-4"/></svg>;

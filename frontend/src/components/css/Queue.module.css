@@ -1,0 +1,422 @@
+﻿.queue {
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.queueHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--divider);
+}
+
+.queueTitle {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.queueTitle .meta {
+  font-weight: 400;
+  color: var(--fg-4);
+  margin-left: 6px;
+  font-size: 13px;
+}
+
+.headerActions {
+  display: flex;
+  gap: 4px;
+}
+
+.queueList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-top: 1px solid var(--divider);
+  background: var(--bg);
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.pageBtn {
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pageBtn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.pageNum {
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 20px;
+  text-align: center;
+  color: var(--fg);
+}
+.ticketRow {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--divider);
+  cursor: pointer;
+  position: relative;
+  transition: background 80ms;
+}
+@media (max-width: 1300px) {
+  .ticketRow {
+    padding: 6px 10px;
+  }
+  .ticketLine1 {
+    margin-bottom: 0 !important;
+  }
+  .ticketTitle {
+    font-size: 12.5px !important;
+    margin-top: 2px !important;
+    -webkit-line-clamp: 1;
+  }
+  .ticketMetaRow {
+    margin-top: 4px !important;
+    gap: 4px !important;
+  }
+  .ticketAside {
+    gap: 2px !important;
+  }
+  .ticketTime {
+    font-size: 10px !important;
+  }
+}
+
+.ticketRow:hover {
+  background: var(--bg-inset);
+}
+
+.ticketRow.selected {
+  background: var(--active);
+}
+
+.ticketRow.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--green-500);
+}
+
+.ticketRow.unread .ticketTitle {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.ticketRow.unread {
+  background: color-mix(in srgb, var(--accent, var(--green-500)) 4%, var(--bg));
+}
+
+.ticketRow.unread::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  width: 3px;
+  background: var(--accent, var(--green-500));
+  border-radius: 0 3px 3px 0;
+}
+
+.ticketRow input[type="checkbox"] {
+  margin-top: 2px;
+  cursor: pointer;
+  accent-color: var(--green-500);
+}
+
+.ticketBody {
+  min-width: 0;
+}
+
+.ticketLine1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.ticketVendor {
+  font-size: 11px;
+  color: var(--fg-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+}
+
+.vendorLabel {
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.jiraKeyChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  font-size: 10.5px;
+  color: var(--fg-4);
+}
+
+.ticketTitle {
+  font-size: 13.5px;
+  color: var(--fg);
+  line-height: 1.35;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.ticketMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+
+.threadCount {
+  font-size: 10.5px;
+  color: var(--fg-4);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.ticketAside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  padding-top: 2px;
+}
+
+.ticketTime {
+  font-size: 10.5px;
+  color: var(--fg-4);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.bulkBar {
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--divider);
+  background: var(--active);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  flex-wrap: wrap;
+}
+
+.bulkBar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.bulkCount {
+  font-weight: 500;
+  color: var(--green-700);
+}
+.statusPillDynamic {
+  background: var(--pill-bg);
+  color: var(--pill-color);
+  border: 1px solid var(--pill-border);
+}
+
+.statusDotDynamic {
+  background: var(--pill-color);
+}
+
+.vendorDotDynamic {
+  background: var(--vendor-color);
+}
+
+.jiraLogoIcon {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.slaChip {
+  margin-left: auto;
+}
+
+.starIcon {
+  color: var(--yellow-500);
+  fill: var(--yellow-400);
+}
+
+.starBtn {
+  opacity: 0;
+  padding: 2px;
+  color: var(--fg-4);
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.starBtn.starred {
+  opacity: 1;
+  color: var(--yellow-500);
+}
+
+.starBtn.starred svg {
+  fill: var(--yellow-400);
+}
+
+.ticketRow:hover .starBtn {
+  opacity: 1;
+}
+
+.starredIndicator {
+  color: var(--yellow-500);
+  fill: var(--yellow-400);
+}
+
+.moreWrap {
+  position: relative;
+}
+
+.moreBtn {
+  opacity: 0;
+  padding: 2px;
+  transition: opacity 0.15s;
+}
+
+.ticketRow:hover .moreBtn {
+  opacity: 1;
+}
+
+.moreMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 100;
+  min-width: 180px;
+  background: var(--bg-raised, var(--bg));
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  padding: 4px;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--fg-2);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.menuItem:hover {
+  background: var(--hover);
+}
+
+.starredIcon {
+  color: var(--yellow-500);
+  fill: var(--yellow-400);
+}
+
+.avatarDynamic {
+  background: var(--avatar-color);
+}
+
+.clearBtn {
+  margin-left: auto;
+}
+@media (max-width: 480px) {
+  .queue {
+    display: none;
+  }
+}
+:global(.app.dense) .queueHeader { padding: 8px 12px 6px; }
+:global(.app.dense) .queueTitle { font-size: 13px; }
+:global(.app.dense) .ticketRow { padding: 5px 10px; gap: 6px; }
+:global(.app.dense) .ticketLine1 { margin-bottom: 1px; }
+:global(.app.dense) .ticketTitle { font-size: 12.5px; }
+:global(.app.dense) .ticketMetaRow { gap: 6px; margin-top: 1px; }
+:global(.app.dense) .pagination { padding: 4px 8px; }
+.queueEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+  gap: 10px;
+  color: var(--fg-4);
+}
+
+.queueEmptyIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--bg-soft);
+  border: 1px dashed var(--border-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-5);
+  margin-bottom: 4px;
+}
+
+.queueEmptyTitle {
+  color: var(--fg-2);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.queueEmptyHint {
+  color: var(--fg-4);
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 240px;
+}
