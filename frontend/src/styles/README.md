@@ -1,39 +1,39 @@
 # Styles Architecture
 
-Organizadas por componente e responsabilidade para melhor manutenção.
+Organized by component and responsibility for easier maintenance.
 
-## Estrutura
+## Structure
 
 ### Core
-- **variables.css** - Design tokens (cores, fontes, espaçamento)
-- **base.css** - Reset global e estilos base
-- **layout.css** - Grid principal do app com responsive breakpoints
+- **variables.css** - Design tokens (colors, fonts, spacing)
+- **base.css** - Global reset and base styles
+- **layout.css** - Main app grid with responsive breakpoints
 
-### Componentes
-- **topbar.css** - Barra superior (search, sync pill, avatar)
-- **rail.css** - Navegação esquerda com ícones
-- **sidebar.css** - Filtros e status sidebar
-- **queue.css** - Lista de tickets e detail row
-- **detail.css** - Painel direito principal
-- **detail-aside.css** - Painel lateral com metadados
+### Components
+- **topbar.css** - Top bar (search, sync pill, avatar)
+- **rail.css** - Left icon navigation
+- **sidebar.css** - Filters and status sidebar
+- **queue.css** - Ticket list and detail row
+- **detail.css** - Main right panel
+- **detail-aside.css** - Side panel with metadata
 
-### Elementos
+### Elements
 - **badges.css** - Status pills, priority, label chips
-- **buttons.css** - Estilos de botão e variações
-- **activity.css** - Feed de atividade e composer
+- **buttons.css** - Button styles and variants
+- **activity.css** - Activity feed and composer
 - **utilities.css** - Toast, tweaks, dropdown, icons
 
 ## Breakpoints
 
 ```css
-1024px  → Tablet: Grid reduzido
-768px   → Mobile: Remove sidebar
-480px   → Small mobile: Remove rail/queue
+1024px  → Tablet: reduced grid
+768px   → Mobile: hides the sidebar
+480px   → Small mobile: hides the rail/queue
 ```
 
-## Convenções
+## Conventions
 
-- Classes com BEM: `.component-element--modifier`
-- Variáveis CSS para tudo (cores, espaçamento, shadows)
-- Media queries inline dentro de cada arquivo
-- Uma responsabilidade por arquivo
+- BEM classes: `.component-element--modifier`
+- CSS variables for everything (colors, spacing, shadows)
+- Media queries inline in each file
+- One responsibility per file

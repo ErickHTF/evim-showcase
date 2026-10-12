@@ -1,53 +1,55 @@
 # EVIM — Enhanced Vendor Interaction Middleware
 
-> **Prova de conceito descontinuada.** Desenvolvida para o fluxo de suporte B2B
-> com fornecedores de um cliente. Este repositório é um **snapshot antigo**,
-> publicado de forma anonimizada como referência de portfólio. O produto seguiu
-> evoluindo internamente, com outra arquitetura (por exemplo, integração direta
-> com Zendesk no lugar do Microsoft Graph). Nomes de empresas, dados reais e
-> infraestrutura foram removidos. Todos os direitos reservados.
+> **Discontinued proof of concept.** Built for a client's B2B vendor-support
+> workflow. This repository is an **outdated snapshot**, published anonymized as
+> a portfolio reference. The product kept evolving internally with a different
+> architecture (for example, a direct Zendesk integration instead of Microsoft
+> Graph). Company names, real data and infrastructure were removed. All rights
+> reserved.
 
-Plataforma para centralizar o suporte a fornecedores: ingere e-mails de uma
-caixa compartilhada (Microsoft Graph), reconstrói as threads dos portais de
-atendimento, vincula cada conversa a um ticket Jira e acompanha o SLA de quem
-está com a bola (time interno ou fornecedor).
+A platform that centralizes vendor support: it ingests e-mails from a shared
+mailbox (Microsoft Graph), rebuilds the threads sent by support portals, links
+each conversation to a Jira ticket and tracks the SLA of whoever holds the ball
+(internal team or vendor).
 
 ## Screenshots
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/inbox-email.png" alt="Inbox com thread de e-mails"/></td>
-    <td><img src="docs/screenshots/inbox-jira.png" alt="Inbox com painel Jira"/></td>
+    <td><img src="docs/screenshots/inbox-email.png" alt="Inbox with an e-mail thread"/></td>
+    <td><img src="docs/screenshots/inbox-jira.png" alt="Inbox with the Jira panel"/></td>
   </tr>
 </table>
 
 <details>
-<summary>Sidebar recolhida</summary>
+<summary>Collapsed sidebar</summary>
 <br>
-<img src="docs/screenshots/inbox-collapsed.png" alt="Inbox com sidebar recolhida" width="600"/>
+<img src="docs/screenshots/inbox-collapsed.png" alt="Inbox with collapsed sidebar" width="600"/>
 </details>
 
 <table>
   <tr>
-    <td><img src="docs/screenshots/metrics.png" alt="Dashboard de métricas SLA"/></td>
-    <td><img src="docs/screenshots/admin-config.png" alt="Painel de configurações"/></td>
+    <td><img src="docs/screenshots/metrics.png" alt="SLA metrics dashboard"/></td>
+    <td><img src="docs/screenshots/admin-config.png" alt="Settings panel"/></td>
   </tr>
   <tr>
-    <td colspan="2"><img src="docs/screenshots/admin-visual.png" alt="Configurações visuais" width="50%"/></td>
+    <td colspan="2"><img src="docs/screenshots/admin-visual.png" alt="Visual settings" width="50%"/></td>
   </tr>
 </table>
 
-## Destaques
+The UI is in Portuguese (Brazil).
 
-- **Arquitetura hexagonal** no backend (ports and adapters), com Graph e Jira atrás de portas.
-- **Parser de threads de portal**: transforma um único HTML com todo o histórico
-  em mensagens separadas (autor, empresa, data, corpo), removendo preheader oculto,
-  boilerplate, assinaturas e links encapsulados (Safe Links, Proofpoint).
-- **Integração Jira** com OAuth2 por usuário (Atlassian) e fallback por service account.
-- **Métricas de SLA** por ownership (interno vs. fornecedor) e atualização em tempo real.
-- **Frontend React** com autenticação OIDC, inbox paginada, painel Jira e tela de administração.
+## Highlights
 
-## Estrutura do repositório
+- **Hexagonal architecture** in the backend (ports and adapters), with Graph and Jira behind ports.
+- **Support-portal thread parser**: turns a single HTML containing the whole history
+  into separate messages (author, company, date, body), removing hidden preheaders,
+  boilerplate, signatures and wrapped links (Safe Links, Proofpoint).
+- **Jira integration** with per-user OAuth2 (Atlassian) and a service-account fallback.
+- **SLA metrics** by ownership (internal vs. vendor) with live updates.
+- **React frontend** with OIDC authentication, a paginated inbox, a Jira panel and an admin screen.
+
+## Repository layout
 
 ```
 .
@@ -56,13 +58,13 @@ está com a bola (time interno ou fornecedor).
 └── docs/       # screenshots
 ```
 
-## Build e testes
+## Build and tests
 
-Este snapshot **não roda de forma independente**: todas as rotas exigem um token
-de um provedor OIDC (Keycloak) e a inbox é montada a partir de issues de um Jira
-Cloud. O Microsoft Graph pode ser desligado (`graph.mock.enabled=true`, o padrão
-aqui), mas aí nenhum e-mail é ingerido. O código compila e os testes rodam sem
-nenhum serviço externo:
+This snapshot **does not run standalone**: every route requires a token from an
+OIDC provider (Keycloak), and the inbox is built from issues in a Jira Cloud
+site. Microsoft Graph can be switched off (`graph.mock.enabled=true`, the default
+here), but then no e-mail is ingested. The code builds and the tests run without
+any external service:
 
 ```bash
 # Backend — Java 21
@@ -75,10 +77,10 @@ npm ci
 npm run build
 ```
 
-Para subir de verdade, o backend lê a configuração de **variáveis de ambiente**
-(o Spring não carrega `.env`; veja [Variáveis de Ambiente](#variáveis-de-ambiente)),
-o Postgres sobe com `docker compose up -d` em `backend/`, e o frontend lê
-`frontend/.env` (copie de `frontend/.env.example`).
+To actually start it, the backend reads its configuration from **environment
+variables** (Spring does not load `.env`; see [Environment variables](#environment-variables)),
+Postgres starts with `docker compose up -d` in `backend/`, and the frontend reads
+`frontend/.env` (copy it from `frontend/.env.example`).
 
 ---
 
@@ -86,83 +88,83 @@ o Postgres sobe com `docker compose up -d` em `backend/`, e o frontend lê
 
 ## Stack
 
-| Camada | Tecnologia |
-|--------|-----------|
+| Layer | Technology |
+|-------|-----------|
 | Runtime | React 19 |
-| Autenticação | Keycloak via `oidc-client-ts` + `react-oidc-context` |
+| Authentication | Keycloak via `oidc-client-ts` + `react-oidc-context` |
 | Container | Docker Compose (node:20) |
 
-## Requisitos
+## Requirements
 
 - Node 20+
-- Variáveis de ambiente (`.env`):
-  - `VITE_API_BASE_URL` — URL base da API backend
-  - `VITE_OIDC_AUTHORITY` — URL do realm Keycloak
-  - `VITE_OIDC_CLIENT_ID` — Client ID OIDC
-  - `VITE_OIDC_REDIRECT_URI` — URI de redirect pós-login
+- Environment variables (`.env`):
+  - `VITE_API_BASE_URL` — backend API base URL
+  - `VITE_OIDC_AUTHORITY` — Keycloak realm URL
+  - `VITE_OIDC_CLIENT_ID` — OIDC client ID
+  - `VITE_OIDC_REDIRECT_URI` — post-login redirect URI
 
 ```bash
-docker compose up   # sobe o dev server em container node:20
+docker compose up   # starts the dev server in a node:20 container
 ```
 
-Porta exposta: `5173`. Proxy configurado em `vite.config.js`:
+Exposed port: `5173`. Proxy configured in `vite.config.js`:
 - `/deploy-api` → `http://host.docker.internal:8081`
 
-## Estrutura
+## Structure
 
 ```
 src/
-├── App.jsx                  # Rotas, providers, lógica global
-├── main.jsx                 # Entry point (OIDC provider wrapping)
+├── App.jsx                  # Routes, providers, global logic
+├── main.jsx                 # Entry point (wraps the OIDC provider)
 ├── auth/
-│   └── oidcConfig.js        # Configuração Keycloak/OIDC
-├── assets/icons/            # Ícones SVG como componentes React
+│   └── oidcConfig.js        # Keycloak/OIDC configuration
+├── assets/icons/            # SVG icons as React components
 ├── components/
-│   ├── Shell.jsx            # Layout principal (Rail, TopBar, Sidebar)
-│   ├── Queue.jsx            # Lista de tickets (inbox)
-│   ├── Detail.jsx           # Detalhe do ticket + DetailAside
-│   ├── DeployPage.jsx       # Interface de deploy
-│   ├── AdminPanel.jsx       # Painel de configuração admin
-│   ├── MetricsPage.jsx      # Dashboard de métricas SLA
-│   ├── JiraPanel.jsx        # Painel de integração Jira
-│   ├── LinkAtlassianPage.jsx # Tela de vinculação OAuth Atlassian (condicional)
-│   ├── SecondaryLayout.jsx  # Layout wrapper secundário
-│   ├── Skeleton.jsx         # Placeholders de carregamento
-│   ├── Tooltip.jsx          # Componente tooltip
-│   ├── Tour.jsx             # Tour guiado de onboarding
-│   ├── Rail.jsx             # Navegação lateral vertical
-│   ├── Icons.jsx            # Wrapper de ícones
-│   └── data.jsx             # Dados estáticos/mock
+│   ├── Shell.jsx            # Main layout (Rail, TopBar, Sidebar)
+│   ├── Queue.jsx            # Ticket list (inbox)
+│   ├── Detail.jsx           # Ticket detail + DetailAside
+│   ├── DeployPage.jsx       # Deploy interface
+│   ├── AdminPanel.jsx       # Admin settings panel
+│   ├── MetricsPage.jsx      # SLA metrics dashboard
+│   ├── JiraPanel.jsx        # Jira integration panel
+│   ├── LinkAtlassianPage.jsx # Atlassian OAuth linking screen (conditional)
+│   ├── SecondaryLayout.jsx  # Secondary layout wrapper
+│   ├── Skeleton.jsx         # Loading placeholders
+│   ├── Tooltip.jsx          # Tooltip component
+│   ├── Tour.jsx             # Guided onboarding tour
+│   ├── Rail.jsx             # Vertical side navigation
+│   ├── Icons.jsx            # Icon wrapper
+│   └── data.jsx             # Static/mock data
 ├── constants/
-│   └── colors.js            # Paleta de cores por status
+│   └── colors.js            # Color palette per status
 ├── context/
-│   └── StatusColorsContext.js # Contexto de cores de status
+│   └── StatusColorsContext.js # Status color context
 ├── hooks/
-│   ├── useConversations.js  # Fetch de cards Jira + paginação
-│   ├── useFeedback.js       # Estado de feedback UI
-│   ├── useJiraCard.js       # Fetch de card + transições
-│   ├── useOutsideClick.js   # Detecção de clique fora do elemento
-│   └── useToast.jsx         # Sistema de notificações toast
+│   ├── useConversations.js  # Fetches Jira cards + pagination
+│   ├── useFeedback.js       # UI feedback state
+│   ├── useJiraCard.js       # Fetches a card + transitions
+│   ├── useOutsideClick.js   # Detects clicks outside an element
+│   └── useToast.jsx         # Toast notification system
 ├── services/
-│   ├── api.js               # Camada HTTP (fetch + auth bearer)
-│   └── metricsSettings.js   # Configurações de métricas
-├── styles/                  # CSS global (variáveis, utilitários, badges)
+│   ├── api.js               # HTTP layer (fetch + bearer auth)
+│   └── metricsSettings.js   # Metrics settings
+├── styles/                  # Global CSS (variables, utilities, badges)
 └── utils/
-    └── string.js            # Utilitários de string
+    └── string.js            # String utilities
 ```
 
-## Rotas
+## Routes
 
-| Path | Componente | Descrição |
-|------|-----------|-----------|
-| `/` | App (Queue) | Inbox de tickets — exibe `LinkAtlassianPage` se Atlassian não vinculado |
-| `/deploy` | DeployPage | Interface de deploy |
-| `/admin` | AdminPanel | Configurações admin |
-| `/metrics` | MetricsPage | Dashboard SLA |
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/` | App (Queue) | Ticket inbox — shows `LinkAtlassianPage` if Atlassian is not linked |
+| `/deploy` | DeployPage | Deploy interface |
+| `/admin` | AdminPanel | Admin settings |
+| `/metrics` | MetricsPage | SLA dashboard |
 
-## API Endpoints Consumidos
+## Consumed API endpoints
 
-| Grupo | Endpoints |
+| Group | Endpoints |
 |-------|-----------|
 | Cards (Jira) | `GET /card/search`, `GET /card/:key`, `PATCH /card/:key`, `GET /card/:key/transitions`, `POST /card/:key/comment`, `GET /card/sprints`, `GET /card/statuses`, `GET /card/priorities`, `GET /card/users/assignable/default`, `GET /card/counts`, `GET /card/attachment/:id/content`, `PUT /card/:key/star`, `DELETE /card/:key/star`, `GET /card/starred/keys` |
 | Email | `GET /email/by-ticket/:id`, `GET /email/by-ticket/:id/thread-messages`, `POST /email/send` (multipart) |
@@ -171,47 +173,47 @@ src/
 | Auth | `GET /auth/atlassian/status`, `GET /auth/atlassian/initiate` |
 | Metrics | `GET /metrics?sprintId=...` |
 
-## Autenticação
+## Authentication
 
-OIDC/Keycloak. O token é injetado em todas as requisições via header `Authorization: Bearer <token>`. Header especial `X-Atlassian-Reauth: required` dispara re-autenticação Atlassian.
+OIDC/Keycloak. The token is injected into every request through the `Authorization: Bearer <token>` header. The special `X-Atlassian-Reauth: required` response header triggers Atlassian re-authentication.
 
 ---
 
 # Backend
 
-## Arquitetura
+## Architecture
 
-O projeto segue **Arquitetura Hexagonal** (Ports and Adapters):
+The project follows **Hexagonal Architecture** (Ports and Adapters):
 
 ```
 src/main/java/com/example/EVIM/
 ├── domain/
-│   ├── model/          ← Entidades de domínio (POJOs com Lombok)
-│   ├── port/out/       ← Interfaces de saída (contratos)
-│   ├── service/        ← Serviços de domínio (HtmlSanitizer, TextNormalizer,
+│   ├── model/          ← Domain entities (POJOs with Lombok)
+│   ├── port/out/       ← Outbound interfaces (contracts)
+│   ├── service/        ← Domain services (HtmlSanitizer, TextNormalizer,
 │   │                     PortalEmailThreadParser facade, SenderClassification)
-│   └── parsing/        ← Subsistema de parsing de threads (componentes coesos)
-│       ├── HeaderDetector        ← detecção de author/date headers
-│       ├── DateRecognizer         ← parsing de datas PT/EN/ES/ISO
-│       ├── BoilerplateFilter      ← regras de boilerplate (com BoilerplateRule)
-│       ├── HtmlToPlainTextConverter ← HTML→texto (pre-strip preheaders ocultos,
-│       │                            sanitizer injetado, unwrap Proofpoint v3)
-│       ├── UrlUnwrapper           ← desfaz wrappers Proofpoint/SafeLinks
-│       ├── SignatureStripper      ← remove blocos de assinatura trailing
-│       │                            (Atte. + nome + telefone + email)
-│       └── ThreadSplitter         ← máquina de estado de split de mensagens
-├── application/        ← Casos de uso, orquestração, DTOs
-│   ├── auth/           ← Contexto de credenciais Atlassian
-│   ├── config/         ← Configuração de aplicação
-│   ├── dto/            ← Data Transfer Objects (Java Records)
-│   └── metrics/        ← Observabilidade do parser (zero-dep)
-│       ├── ParserMetrics          ← contadores AtomicLong (success/fallback/failed/boilerplateByRule)
-│       └── ParseDiagnostic        ← record de diagnóstico emitido por parse
+│   └── parsing/        ← Thread-parsing subsystem (cohesive components)
+│       ├── HeaderDetector        ← detects author/date headers
+│       ├── DateRecognizer         ← parses PT/EN/ES/ISO dates
+│       ├── BoilerplateFilter      ← boilerplate rules (with BoilerplateRule)
+│       ├── HtmlToPlainTextConverter ← HTML→text (pre-strips hidden preheaders,
+│       │                            injected sanitizer, Proofpoint v3 unwrap)
+│       ├── UrlUnwrapper           ← undoes Proofpoint/SafeLinks wrappers
+│       ├── SignatureStripper      ← removes trailing signature blocks
+│       │                            (closing + name + phone + e-mail)
+│       └── ThreadSplitter         ← message-splitting state machine
+├── application/        ← Use cases, orchestration, DTOs
+│   ├── auth/           ← Atlassian credentials context
+│   ├── config/         ← Application configuration
+│   ├── dto/            ← Data Transfer Objects (Java records)
+│   └── metrics/        ← Parser observability (zero-dep)
+│       ├── ParserMetrics          ← AtomicLong counters (success/fallback/failed/boilerplateByRule)
+│       └── ParseDiagnostic        ← diagnostic record emitted per parse
 ├── adapter/
 │   ├── in/
-│   │   ├── web/        ← Controllers REST
-│   │   ├── scheduler/  ← Jobs agendados (@Scheduled)
-│   │   └── filter/     ← Filtros HTTP (AtlassianCredentialsFilter)
+│   │   ├── web/        ← REST controllers
+│   │   ├── scheduler/  ← Scheduled jobs (@Scheduled)
+│   │   └── filter/     ← HTTP filters (AtlassianCredentialsFilter)
 │   └── out/
 │       ├── graph/      ← Microsoft Graph API (fetch/send e-mails)
 │       ├── jira/       ← Jira Cloud REST API (client, mapper, util)
@@ -219,40 +221,40 @@ src/main/java/com/example/EVIM/
 └── config/             ← Security, Jackson, CORS
 ```
 
-**Fluxo de dependência:** `adapter/in → application → domain ← adapter/out`
+**Dependency flow:** `adapter/in → application → domain ← adapter/out`
 
-Os adapters de entrada (controllers, schedulers) chamam os serviços de aplicação, que operam sobre o domínio através de ports. Os adapters de saída implementam os ports definidos no domínio.
+Inbound adapters (controllers, schedulers) call the application services, which operate on the domain through ports. Outbound adapters implement the ports defined in the domain.
 
 ---
 
-## Tecnologias
+## Technologies
 
-| Camada     | Tecnologia |
+| Layer      | Technology |
 |------------|-----------|
 | Runtime    | Java 21 (Amazon Corretto), Spring Boot |
-| APIs       | Spring Web (REST)|
-| Segurança  | Spring Security + OAuth2 Resource Server (JWT via Keycloak) |
-| E-mail     | Microsoft Graph SDK v6.6.0 + `java.net.http.HttpClient` (fetch paginado) |
-| Credential | Azure Identity (ClientSecretCredential) com OkHttp |
-| Jira       | REST API v3 (OAuth2 por usuário + Basic Auth fallback) |
-| Banco      | PostgreSQL|
+| APIs       | Spring Web (REST) |
+| Security   | Spring Security + OAuth2 Resource Server (JWT via Keycloak) |
+| E-mail     | Microsoft Graph SDK v6.6.0 + `java.net.http.HttpClient` (paginated fetch) |
+| Credential | Azure Identity (ClientSecretCredential) with OkHttp |
+| Jira       | REST API v3 (per-user OAuth2 + Basic Auth fallback) |
+| Database   | PostgreSQL |
 
 ---
 
-## Configuração
+## Configuration
 
-### Pré-requisitos
+### Prerequisites
 
-- Java 21 (Amazon Corretto 21 recomendado)
-- Docker (para PostgreSQL)
+- Java 21 (Amazon Corretto 21 recommended)
+- Docker (for PostgreSQL)
 - Keycloak (OIDC provider)
-- Registro de aplicação no Azure AD/Graph API (Somente Administrador)
-- Registro de aplicação no Atlassian Developer Console (Consultar Scopes)
+- An app registration in Azure AD / Graph API (admin only)
+- An app registration in the Atlassian Developer Console (see the scopes below)
 
 ### application.properties
 
 ```properties
-# Banco de dados
+# Database
 spring.datasource.url=jdbc:postgresql://localhost:5433/Manager_DB
 spring.datasource.username=${DB_USERNAME:evim}
 spring.datasource.password=${DB_PASSWORD:evim}
@@ -267,7 +269,7 @@ atlassian.client-secret=${ATLASSIAN_CLIENT_SECRET}
 atlassian.redirect-uri=${ATLASSIAN_REDIRECT_URI}
 atlassian.frontend-url=${ATLASSIAN_FRONTEND_URL}
 
-# Jira (service account — fallback quando não há OAuth do usuário)
+# Jira (service account — fallback when the user has no OAuth token)
 jira.base-url=${jira_base_url}
 jira.username=${jira_username}
 jira.api-token=${jira_api_token}
@@ -285,81 +287,80 @@ graph.poll.fixed-delay-ms=60000
 
 ---
 
-## Banco de Dados
+## Database
 
 ### Email
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| `id` | Long | PK auto-gerado |
-| `sender` | String | Endereço do remetente |
-| `receiver` | String | Endereço do primeiro destinatário |
-| `subject` | String | Assunto |
-| `body` | String (TEXT) | Corpo HTML do e-mail |
-| `received` | LocalDateTime | Data/hora de recebimento (UTC) |
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Long | Auto-generated PK |
+| `sender` | String | Sender address |
+| `receiver` | String | First recipient address |
+| `subject` | String | Subject |
+| `body` | String (TEXT) | HTML body of the e-mail |
+| `received` | LocalDateTime | Received date/time (UTC) |
 | `status` | Status (enum) | Open, UnderReview, PendingCustomer, CustomerValidation, Closed |
-| `messageId` | String (UNIQUE) | ID da mensagem no Graph API |
-| `conversationId` | Long (FK) | Conversa associada |
-| `attachments` | List\<Attachment\> | Anexos do e-mail |
+| `messageId` | String (UNIQUE) | Message ID in the Graph API |
+| `conversationId` | Long (FK) | Associated conversation |
+| `attachments` | List\<Attachment\> | E-mail attachments |
 
 ### Conversation
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
-| `id` | Long | PK auto-gerado |
-| `ticketId` | Integer | Número do ticket do fornecedor (extraído do subject/body) |
-| `subject` | String | Assunto normalizado |
-| `status` | Status | Status da conversa |
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Long | Auto-generated PK |
+| `ticketId` | Integer | Vendor ticket number (extracted from subject/body) |
+| `subject` | String | Normalized subject |
+| `status` | Status | Conversation status |
 | `priority` | Priority | High, Medium, Low |
-| `lastUpdate` | LocalDateTime | Última atualização (último e-mail recebido) |
-| `pendingResponse` | Boolean | `true` = aguardando resposta do fornecedor |
-| `externalBoardId` | String | Chave do issue Jira (ex: `EVIM-123`) |
+| `lastUpdate` | LocalDateTime | Last update (last e-mail received) |
+| `pendingResponse` | Boolean | `true` = waiting for the vendor's reply |
+| `externalBoardId` | String | Jira issue key (e.g. `EVIM-123`) |
 
 ### ThreadMessage
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
+| Field | Type | Description |
+|-------|------|-------------|
 | `id` | Long | PK |
-| `emailId` | Long (FK) | E-mail de origem (portal) |
-| `conversationId` | Long (FK) | Conversa associada |
-| `author` | String | Nome do autor da mensagem |
-| `company` | String | Empresa do autor |
-| `sentAt` | LocalDateTime | Data/hora do envio |
-| `body` | String | Corpo da mensagem individual |
-| `ordinal` | Integer | Ordem na thread (0 = mais recente) |
+| `emailId` | Long (FK) | Source e-mail (portal) |
+| `conversationId` | Long (FK) | Associated conversation |
+| `author` | String | Message author's name |
+| `company` | String | Author's company |
+| `sentAt` | LocalDateTime | Sent date/time |
+| `body` | String | Body of the individual message |
+| `ordinal` | Integer | Order in the thread (0 = most recent) |
 
 ### Attachment
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
+| Field | Type | Description |
+|-------|------|-------------|
 | `id` | Long | PK |
-| `fileName` | String | Nome do arquivo |
+| `fileName` | String | File name |
 | `contentType` | String | MIME type |
-| `contentBytes` | byte[] | Conteúdo binário |
-| `emailId` | Long (FK) | E-mail ao qual pertence |
+| `contentBytes` | byte[] | Binary content |
+| `emailId` | Long (FK) | E-mail it belongs to |
 
 ### SlaOwnershipLog
 
-| Campo | Tipo | Descrição |
-|-------|------|-----------|
+| Field | Type | Description |
+|-------|------|-------------|
 | `id` | Long | PK |
-| `jiraKey` | String | Chave do issue Jira |
-| `ownerType` | OwnerType | VENDOR ou INTERNAL |
-| `startAt` | LocalDateTime | Início do período de ownership |
-| `endAt` | LocalDateTime | Fim (null = período ativo) |
+| `jiraKey` | String | Jira issue key |
+| `ownerType` | OwnerType | VENDOR or INTERNAL |
+| `startAt` | LocalDateTime | Start of the ownership period |
+| `endAt` | LocalDateTime | End (null = active period) |
 
 ---
 
-## Fluxos da Aplicação
+## Application flows
 
-### 1. Ingestão de E-mails
+### 1. E-mail ingestion
 
-A ingestão é o fluxo principal do sistema. Busca e-mails não lidos da caixa compartilhada, na pasta especificada (graph.folder-id}
-) e os processa.
+Ingestion is the system's main flow. It fetches unread e-mails from the shared mailbox, in the configured folder (`graph.folder-id`), and processes them.
 
-**Trigger:** `EmailPollingScheduler` executa a cada 60 segundos (`fixedDelay`), ou manualmente via `POST /email/ingest`.
+**Trigger:** `EmailPollingScheduler` runs every 60 seconds (`fixedDelay`), or manually through `POST /email/ingest`.
 
-**Proteção contra concorrência:** `AtomicBoolean` no `EmailIngestionService` impede que o scheduler e um trigger manual executem simultaneamente.
+**Concurrency guard:** an `AtomicBoolean` in `EmailIngestionService` prevents the scheduler and a manual trigger from running at the same time.
 
 ```
 EmailPollingScheduler (@Scheduled, 60s)
@@ -367,198 +368,198 @@ EmailPollingScheduler (@Scheduled, 60s)
   ▼
 EmailIngestionService.ingestNewEmails()
   │
-  ├─ Adquire lock (AtomicBoolean.compareAndSet)
+  ├─ Acquires the lock (AtomicBoolean.compareAndSet)
   │
   ├─ EmailFetchPort.fetchNewEmails(pageConsumer)
   │   │
   │   │  ┌─────────────────────────────────────────────┐
   │   └─▶│ GraphMailFetchAdapter                       │
   │      │                                             │
-  │      │ 1. Obtém access token via                   │
+  │      │ 1. Gets an access token via                 │
   │      │    ClientSecretCredential                   │
   │      │                                             │
-  │      │ 2. HTTP GET direto (java.net.http):         │
+  │      │ 2. Direct HTTP GET (java.net.http):         │
   │      │    /users/{userId}/mailFolders/{folderId}/  │
-  │      │    messages?$filter=isRead eq false          │
+  │      │    messages?$filter=isRead eq false         │
   │      │    &$top=50                                 │
   │      │                                             │
-  │      │ 3. Para cada página de 50 e-mails:          │
-  │      │    - Mapeia JSON → Email via                │
+  │      │ 3. For each page of 50 e-mails:             │
+  │      │    - Maps JSON → Email via                  │
   │      │      GraphEmailMapper.fromJsonNode()        │
-  │      │    - Se hasAttachments: busca via SDK        │
-  │      │    - Entrega página ao consumer             │
+  │      │    - If hasAttachments: fetches via SDK     │
+  │      │    - Hands the page to the consumer         │
   │      │                                             │
-  │      │ 4. Segue @odata.nextLink (com validação     │
-  │      │    de domínio graph.microsoft.com)           │
+  │      │ 4. Follows @odata.nextLink (validating      │
+  │      │    the graph.microsoft.com domain)          │
   │      │                                             │
-  │      │ 5. Retorna total de e-mails fetchados       │
+  │      │ 5. Returns the number of fetched e-mails    │
   │      └─────────────────────────────────────────────┘
   │
-  ├─ Para cada e-mail na página:
+  ├─ For each e-mail in the page:
   │   │
   │   ├─ EmailProcessingService.processSingleEmail(email)
-  │   │   (cada e-mail em sua própria @Transactional)
+  │   │   (each e-mail in its own @Transactional)
   │   │
-  │   ├─ Se processou com sucesso:
+  │   ├─ If processed successfully:
   │   │   └─ emailFetchPort.markAsRead(messageId)
-  │   │      (PATCH via Graph SDK — fora da transação)
+  │   │      (PATCH via Graph SDK — outside the transaction)
   │   │
-  │   ├─ Se duplicado: incrementa contador de skipped
+  │   ├─ If duplicate: increments the skipped counter
   │   │
-  │   └─ Se erro: incrementa contador, loga, continua
+  │   └─ If error: increments the counter, logs, continues
   │
-  ├─ Loga progresso a cada página
+  ├─ Logs progress after each page
   │
-  └─ Libera lock (finally)
+  └─ Releases the lock (finally)
 ```
 
-**Decisão arquitetural:** O `markAsRead` é executado **fora** da transação JPA. Se o e-mail for salvo no banco mas o `markAsRead` falhar, o e-mail será re-fetchado no próximo polling — mas a deduplicação por `messageId` (UNIQUE) impedirá reprocessamento. Isso garante que nenhum e-mail seja perdido.
+**Architectural decision:** `markAsRead` runs **outside** the JPA transaction. If the e-mail is saved but `markAsRead` fails, the e-mail is fetched again on the next poll — but deduplication by `messageId` (UNIQUE) prevents reprocessing. This guarantees that no e-mail is lost.
 
 ---
 
-### 2. Processamento Individual de E-mail
+### 2. Processing a single e-mail
 
-`EmailProcessingService.processSingleEmail()` — anotado com `@Transactional` (cada e-mail = 1 transação).
+`EmailProcessingService.processSingleEmail()` — annotated with `@Transactional` (one e-mail = one transaction).
 
 ```
 processSingleEmail(email)
   │
-  ├─ 1. DEDUPLICAÇÃO
+  ├─ 1. DEDUPLICATION
   │   └─ findByMessageId(email.messageId)
-  │      Se já existe → return false (skip)
+  │      If it already exists → return false (skip)
   │
-  ├─ 2. RESOLUÇÃO DE CONVERSA
+  ├─ 2. CONVERSATION RESOLUTION
   │   │
-  │   ├─ Normaliza subject:
-  │   │   Remove prefixos Re: / Fwd: / Fw: / AW: / ENC:
-  │   │   recursivamente (ex: "Re: Fwd: Re: Problema" → "Problema")
+  │   ├─ Normalizes the subject:
+  │   │   Removes Re: / Fwd: / Fw: / AW: / ENC: prefixes
+  │   │   recursively (e.g. "Re: Fwd: Re: Problem" → "Problem")
   │   │
-  │   ├─ Busca conversas existentes por subject similar:
+  │   ├─ Looks up existing conversations with a similar subject:
   │   │   SELECT DISTINCT conversation_id
   │   │   FROM tb_email
-  │   │   WHERE LOWER(subject) LIKE '%problema%'
+  │   │   WHERE LOWER(subject) LIKE '%problem%'
   │   │   ORDER BY conversation_id ASC
   │   │
-  │   ├─ Se encontrou → usa a conversa existente (menor ID)
-  │   └─ Se não → cria nova conversa (status=Open, pendingResponse=true)
+  │   ├─ If found → uses the existing conversation (lowest ID)
+  │   └─ If not → creates a new conversation (status=Open, pendingResponse=true)
   │
-  ├─ 3. EXTRAÇÃO DE TICKET DO FORNECEDOR
+  ├─ 3. VENDOR TICKET EXTRACTION
   │   │
-  │   │  Tenta extrair número de 8 dígitos do ticket:
+  │   │  Tries to extract the 8-digit ticket number:
   │   │
   │   ├─ Subject: regex \b(\d{8})\b
-  │   │   Ex: "Problema ticket 12345678" → 12345678
+  │   │   e.g. "Problem ticket 12345678" → 12345678
   │   │
-  │   ├─ Body (sem HTML): regex \((\d{8})\)
-  │   │   Ex: "Referente ao chamado (12345678)" → 12345678
+  │   ├─ Body (HTML stripped): regex \((\d{8})\)
+  │   │   e.g. "Regarding request (12345678)" → 12345678
   │   │
   │   └─ Body: regex solicita[çc][aã]o\s+n.*(\d{8})
-  │       Ex: "Solicitação nº 12345678" → 12345678
+  │       e.g. "Solicitação nº 12345678" → 12345678
   │
-  │   Se encontrou e conversa não tem ticketId:
+  │   If found and the conversation has no ticketId:
   │   → conversation.ticketId = Integer(ticket)
   │
-  ├─ 4. ATUALIZA CONVERSA
-  │   ├─ lastUpdate = email.received (ou now)
+  ├─ 4. UPDATES THE CONVERSATION
+  │   ├─ lastUpdate = email.received (or now)
   │   ├─ pendingResponse = !isInternalSender(email.sender)
-  │   │   (usa SenderClassificationService — checa domínio
-  │   │    contra config 'sla.internal.domain')
+  │   │   (uses SenderClassificationService — checks the domain
+  │   │    against the 'sla.internal.domain' setting)
   │   └─ save(conversation)
   │
-  ├─ 5. PERSISTE E-MAIL + ANEXOS
+  ├─ 5. PERSISTS THE E-MAIL + ATTACHMENTS
   │   ├─ email.conversationId = conversation.id
-  │   ├─ Separa anexos do e-mail (evita cascade)
-  │   ├─ save(email) → obtém email.id
-  │   └─ Para cada anexo:
+  │   ├─ Detaches attachments from the e-mail (avoids cascade)
+  │   ├─ save(email) → gets email.id
+  │   └─ For each attachment:
   │       attachment.emailId = email.id
   │       save(attachment)
   │
-  ├─ 6. PARSE DE THREAD MESSAGES
-  │   └─ (ver seção 3 abaixo)
+  ├─ 6. THREAD MESSAGE PARSING
+  │   └─ (see section 3 below)
   │
-  └─ 7. TRACKING DE SLA
-      ├─ Se remetente é fornecedor (externo):
-      │   E conversa tem Jira vinculado:
+  └─ 7. SLA TRACKING
+      ├─ If the sender is a vendor (external):
+      │   AND the conversation is linked to Jira:
       │   → slaMetricsService.onVendorEmailReceived(jiraKey)
-      │     (transição VENDOR → INTERNAL)
+      │     (VENDOR → INTERNAL transition)
       └─ return true
 ```
 
 ---
 
-### 3. Parsing de Thread Messages
+### 3. Thread message parsing
 
-E-mails de portais de atendimento (ex.: o portal de atendimento de um fornecedor) chegam como um único HTML contendo todo o histórico da conversa. O `PortalEmailThreadParser` (facade) delega a um pipeline de componentes em `domain/parsing/`.
+E-mails from support portals (e.g. a vendor's help-desk portal) arrive as a single HTML document containing the whole conversation history. `PortalEmailThreadParser` (facade) delegates to a pipeline of components in `domain/parsing/`.
 
-#### Arquitetura do Parser
+#### Parser architecture
 
 ```
-PortalEmailThreadParser (facade, API estática)
+PortalEmailThreadParser (facade, static API)
   │
   ├─ HtmlToPlainTextConverter
-  │   ├─ Recebe UnaryOperator<String> sanitizer (injeção funcional)
-  │   ├─ Recebe Predicate<String> isProperName
-  │   ├─ Pre-pass: removeHiddenElements() — strip <div style="display:none">,
-  │   │   visibility:hidden, opacity:0, max-height:0, font-size:1px e o
-  │   │   atributo HTML5 `hidden`. Necessário ANTES do sanitizer OWASP, que
-  │   │   removeria os valores CSS proibidos e deixaria o elemento órfão.
-  │   ├─ Decode de duplo escape (&lt;a&gt; → <a>) quando o body veio com
-  │   │   HTML entity-encoded
-  │   ├─ Aplica sanitizer → JSoup DOM walk → markdown links → img-alt promotion
-  │   └─ Retorna plain text
+  │   ├─ Receives a UnaryOperator<String> sanitizer (functional injection)
+  │   ├─ Receives a Predicate<String> isProperName
+  │   ├─ Pre-pass: removeHiddenElements() — strips <div style="display:none">,
+  │   │   visibility:hidden, opacity:0, max-height:0, font-size:1px and the
+  │   │   HTML5 `hidden` attribute. Required BEFORE the OWASP sanitizer, which
+  │   │   would remove the forbidden CSS values and leave the element orphaned.
+  │   ├─ Decodes double escaping (&lt;a&gt; → <a>) when the body arrived
+  │   │   entity-encoded
+  │   ├─ Applies sanitizer → JSoup DOM walk → markdown links → img-alt promotion
+  │   └─ Returns plain text
   │
   ├─ UrlUnwrapper (utility)
-  │   ├─ Desfaz Proofpoint v3 (`urldefense.com/v3/__<url>__;...`)
-  │   ├─ Desfaz Microsoft SafeLinks (`*.safelinks.protection.outlook.com`)
-  │   └─ Aplicado pelo HtmlToPlainTextConverter ao reescrever <a href>
+  │   ├─ Undoes Proofpoint v3 (`urldefense.com/v3/__<url>__;...`)
+  │   ├─ Undoes Microsoft SafeLinks (`*.safelinks.protection.outlook.com`)
+  │   └─ Applied by HtmlToPlainTextConverter when rewriting <a href>
   │
-  ├─ ThreadSplitter (máquina de estado)
-  │   ├─ normalizeLines() → remove zero-width, colapsa brancos
-  │   ├─ Loop principal:
+  ├─ ThreadSplitter (state machine)
+  │   ├─ normalizeLines() → removes zero-width chars, collapses whitespace
+  │   ├─ Main loop:
   │   │   ├─ Try 1: two-line header (AUTHOR_LINE + date within 5 lines)
   │   │   └─ Try 2: inline header
-  │   ├─ collectBody() até próximo header
-  │   ├─ cleanOrphanHeaders() (usa dateRecognizer.isExactlyDate)
-  │   └─ Pós-processo: SignatureStripper.strip() em cada body emitido
+  │   ├─ collectBody() until the next header
+  │   ├─ cleanOrphanHeaders() (uses dateRecognizer.isExactlyDate)
+  │   └─ Post-process: SignatureStripper.strip() on each emitted body
   │
   ├─ HeaderDetector
   │   ├─ AUTHOR_LINE pattern (Unicode-aware)
   │   ├─ isProperName() — multi-word capitalized name
-  │   ├─ tryInlineHeader() — email + nome + data na mesma linha
-  │   ├─ findDateLineWithin() — busca data nas próximas N linhas
-  │   └─ startsWithUpper() — trata acentos/BMP+
+  │   ├─ tryInlineHeader() — e-mail + name + date on the same line
+  │   ├─ findDateLineWithin() — looks for a date in the next N lines
+  │   └─ startsWithUpper() — handles accents/BMP+
   │
   ├─ DateRecognizer
-  │   ├─ DATE_LINE pattern combinado (PT/EN/ES/ISO/numérico)
-  │   ├─ parseDate() → LocalDateTime ou null
+  │   ├─ Combined DATE_LINE pattern (PT/EN/ES/ISO/numeric)
+  │   ├─ parseDate() → LocalDateTime or null
   │   ├─ containsDate() — find()
   │   └─ isExactlyDate() — matches() (full line)
   │
   ├─ SignatureStripper
-  │   ├─ Heurística bottom-up: classifica linhas como SIGNATURE (email,
-  │   │   telefone, URL, ALL CAPS name, dept, slogan) / WEAK_SIGNATURE
-  │   │   (title-case name) / DELIMITER (Atte., Atenciosamente, separador)
+  │   ├─ Bottom-up heuristic: classifies lines as SIGNATURE (e-mail,
+  │   │   phone, URL, ALL CAPS name, department, slogan) / WEAK_SIGNATURE
+  │   │   (title-case name) / DELIMITER (Atte., Atenciosamente, separator)
   │   │   / BLANK / CONTENT
-  │   ├─ Só corta se houver pelo menos um sinal forte (email/telefone/URL/
-  │   │   closing) e o body sobrevivente ainda tiver prosa real
-  │   ├─ Atachments vivem no agregado Email — nunca são tocados
-  │   └─ isEffectivelyEmpty(body) — true quando o body é só saudação +
-  │       assinatura, usado pelo fallback do ThreadMessageBuilder para
-  │       suprimir interações fantasma (auto-acks do portal)
+  │   ├─ Only cuts if there is at least one strong signal (e-mail/phone/URL/
+  │   │   closing) and the surviving body still has real prose
+  │   ├─ Attachments live on the Email aggregate — never touched
+  │   └─ isEffectivelyEmpty(body) — true when the body is just a greeting +
+  │       signature; used by the ThreadMessageBuilder fallback to
+  │       suppress phantom interactions (portal auto-acks)
   │
   └─ BoilerplateFilter
       ├─ BoilerplateRule record (name, pattern, minLineLength, priority)
       │   └─ implements Comparable (priority desc → minLineLength desc → pattern length desc)
-      ├─ 50+ regras default (portal do fornecedor, CSAT/NPS survey, [EXTERNAL]/
+      ├─ 50+ default rules (vendor portal, CSAT/NPS survey, [EXTERNAL]/
       │   [EXTERNO] banners, Proofpoint, disclaimers, closings)
-      ├─ Regra `vendor-portal.solicitacao-atualizada` exige dígito (nº do ticket)
-      │   para não consumir prosa legítima como "Sua solicitação foi
-      │   recebida em nossa fila"
-      ├─ Regra `vendor-portal.csat-score-line` casa tanto dígitos puros (0..10)
-      │   quanto a forma markdown-link "[N](https://surveys...)" que cada
-      │   nota assume após HTML→texto
+      ├─ The `vendor-portal.solicitacao-atualizada` rule requires a digit (ticket no.)
+      │   so it does not swallow legitimate prose such as "Sua solicitação foi
+      │   recebida em nossa fila" ("your request was received in our queue")
+      ├─ The `vendor-portal.csat-score-line` rule matches both bare digits (0..10)
+      │   and the markdown-link form "[N](https://surveys...)" that each
+      │   score takes after HTML→text
       ├─ isBoilerplate() / matchedRule()
-      ├─ Consumer<String> onRuleMatched (callback para métricas)
+      ├─ Consumer<String> onRuleMatched (callback for metrics)
       └─ stripFromText(text, isProperName) — strip + trailing signature trim
 ```
 
@@ -568,9 +569,9 @@ PortalEmailThreadParser (facade, API estática)
 public record ParseResult(List<ParsedMessage> messages, String plainText) {}
 ```
 
-O `parseDetailed(html)` retorna ambos, evitando double-parse no fallback path.
+`parseDetailed(html)` returns both, avoiding a double parse on the fallback path.
 
-#### Orquestração de persistência (ThreadMessageBuilder)
+#### Persistence orchestration (ThreadMessageBuilder)
 
 ```
 ThreadMessageBuilder.buildAndSave(savedEmail, conversation)
@@ -578,41 +579,41 @@ ThreadMessageBuilder.buildAndSave(savedEmail, conversation)
   ├─ PortalEmailThreadParser.parseDetailed(email.body)
   │   → ParseResult { messages, plainText }
   │
-  ├─ Se messages vazio → fallback:
+  ├─ If messages is empty → fallback:
   │   ├─ stripBoilerplate(plainText) + SignatureStripper.strip()
-  │   ├─ Se body fica vazio → ParseDiagnostic.failed("blank-after-strip")
-  │   ├─ Se body é efetivamente vazio (só saudação + assinatura) →
-  │   │   ParseDiagnostic.failed("phantom-empty") — suprime auto-acks
-  │   │   do portal que surfariam como "Olá Lucas," + assinatura
-  │   └─ Senão salva como mensagem única usando senderDisplayName/Address
+  │   ├─ If the body ends up empty → ParseDiagnostic.failed("blank-after-strip")
+  │   ├─ If the body is effectively empty (just greeting + signature) →
+  │   │   ParseDiagnostic.failed("phantom-empty") — suppresses portal
+  │   │   auto-acks that would surface as "Olá Lucas," + signature
+  │   └─ Otherwise saves it as a single message using senderDisplayName/Address
   │
-  ├─ Verifica se este e-mail é o mais recente da conversa
+  ├─ Checks whether this e-mail is the most recent in the conversation
   │
-  ├─ Se é o mais recente (ou único):
-  │   ├─ Remove thread messages anteriores da conversa
-  │   └─ Salva novas thread messages (ordinal = 0..N)
+  ├─ If it is the most recent (or the only one):
+  │   ├─ Removes the conversation's previous thread messages
+  │   └─ Saves the new thread messages (ordinal = 0..N)
   │
-  └─ Emite ParseDiagnostic → ParserMetrics
+  └─ Emits ParseDiagnostic → ParserMetrics
 ```
 
-#### Reparse em lote (ThreadReparseService)
+#### Batch reparse (ThreadReparseService)
 
 ```
-POST /admin/reparse-threads        → reparse de TODOS os e-mails
-POST /admin/reparse-threads        → reparse escopado por payload:
+POST /admin/reparse-threads        → reparses ALL e-mails
+POST /admin/reparse-threads        → reparse scoped by payload:
   body { "conversationIds":[…], "emailIds":[…] }
   │
-  ├─ Resolve escopo (conversationIds expandem para emailIds via repository)
-  ├─ Disparado em virtual thread (assíncrono, não bloqueia o request)
-  ├─ Chunked (200 e-mails por chunk) com @Transactional por chunk
-  ├─ Reparse limpa thread messages stale do e-mail antes de reescrever
+  ├─ Resolves the scope (conversationIds expand to emailIds via the repository)
+  ├─ Runs on a virtual thread (async, does not block the request)
+  ├─ Chunked (200 e-mails per chunk) with @Transactional per chunk
+  ├─ Reparse clears the e-mail's stale thread messages before rewriting
   ├─ Status: GET /admin/reparse-threads/status →
   │   { running, total, processed, progress, newlyParsed,
   │     failedEmails, fallbackEmails, status, finishedAt }
-  └─ Cancelável: DELETE /admin/reparse-threads
+  └─ Cancellable: DELETE /admin/reparse-threads
 ```
 
-Exemplo (escopado por conversa):
+Example (scoped by conversation):
 
 ```bash
 curl -X POST http://localhost:8080/admin/reparse-threads \
@@ -621,21 +622,21 @@ curl -X POST http://localhost:8080/admin/reparse-threads \
 curl http://localhost:8080/admin/reparse-threads/status
 ```
 
-#### Observabilidade (ParserMetrics — zero-dep)
+#### Observability (ParserMetrics — zero-dep)
 
-Contadores AtomicLong expostos em `GET /admin/parser-metrics`:
+AtomicLong counters exposed at `GET /admin/parser-metrics`:
 - `success` / `fallback` / `failed` / `dateUnparsed`
 - `messagesEmitted` (total sub-messages parsed)
 - `successByDomain` / `fallbackByDomain` (per-sender-domain breakdown)
-- `boilerplateByRule` (per-rule hit counts via BoilerplateFilter callback)
+- `boilerplateByRule` (per-rule hit counts via the BoilerplateFilter callback)
 
-Reset via `DELETE /admin/parser-metrics`.
+Reset with `DELETE /admin/parser-metrics`.
 
-**Por que a decisão de substituir e não acumular?** Os e-mails do portal do fornecedor contêm o histórico completo. Cada novo e-mail (interação) traz todas as mensagens anteriores + novas. Manter ambos causaria duplicação.
+**Why replace instead of accumulate?** The vendor portal's e-mails carry the full history. Every new e-mail (interaction) brings all previous messages plus the new ones. Keeping both would cause duplication.
 
 ---
 
-### 4. Envio de E-mails
+### 4. Sending e-mails
 
 ```
 POST /email/send
@@ -645,12 +646,12 @@ POST /email/send
   ▼
 EmailSendService.send(dto, jwtAuth)
   │
-  ├─ 1. Extrai nome do usuário do JWT (claim "name" ou "email")
+  ├─ 1. Extracts the user's name from the JWT ("name" or "email" claim)
   │
-  ├─ 2. Adiciona assinatura HTML:
-  │     <hr><small><strong>{nome}</strong> via E-VIM</small>
+  ├─ 2. Appends an HTML signature:
+  │     <hr><small><strong>{name}</strong> via E-VIM</small>
   │
-  ├─ 3. Envia via Graph API:
+  ├─ 3. Sends through the Graph API:
   │   │
   │   └─ GraphMailSendAdapter.sendOnBehalf()
   │       POST /users/{mailboxUserId}/sendMail
@@ -659,42 +660,42 @@ EmailSendService.send(dto, jwtAuth)
   │           from: { name: "João via ", address: mailboxUserId },
   │           to: [{ address: dto.to }],
   │           subject: dto.subject,
-  │           body: { contentType: "HTML", content: bodyComAssinatura }
+  │           body: { contentType: "HTML", content: bodyWithSignature }
   │         },
   │         saveToSentItems: true
   │       }
   │
-  ├─ 4. Salva registro do e-mail enviado:
+  ├─ 4. Saves a record of the sent e-mail:
   │     Email { sender=displayName, receiver=dto.to, ... }
-  │     Vincula à conversa pelo ticketId
+  │     Links it to the conversation through the ticketId
   │
-  └─ 5. Se replicateToJira = true:
-        ├─ Strip HTML do body → texto puro
-        ├─ Monta comentário em ADF (Atlassian Document Format)
+  └─ 5. If replicateToJira = true:
+        ├─ Strips HTML from the body → plain text
+        ├─ Builds the comment in ADF (Atlassian Document Format)
         └─ ProviderCommentPort.addComment(issueKey, adfJson)
            POST /rest/api/3/issue/{issueKey}/comment
 ```
 
 ---
 
-### 5. Ciclo de Vida de Conversas
+### 5. Conversation lifecycle
 
 ```
-CRIAÇÃO (automática durante ingestão)
+CREATION (automatic during ingestion)
   │
-  │  E-mail chega → normaliza subject (assubto) → não encontra conversa existente
-  │  → Cria Conversation { status=Open, pendingResponse=true }
-  │
-  ▼
-ATUALIZAÇÃO (a cada novo e-mail)
-  │
-  │  Cada e-mail recebido atualiza:
-  │  - lastUpdate = data do e-mail
-  │  - pendingResponse = true (se remetente externo)
-  │                      false (se remetente interno)
+  │  E-mail arrives → normalizes the subject → no existing conversation found
+  │  → Creates Conversation { status=Open, pendingResponse=true }
   │
   ▼
-VINCULAÇÃO COM JIRA
+UPDATE (on every new e-mail)
+  │
+  │  Each received e-mail updates:
+  │  - lastUpdate = e-mail date
+  │  - pendingResponse = true (external sender)
+  │                      false (internal sender)
+  │
+  ▼
+JIRA LINKING
   │
   │  PATCH /conversations/{id}/link-jira
   │  Body: "EVIM-123"
@@ -703,52 +704,52 @@ VINCULAÇÃO COM JIRA
   │  1. conversation.externalBoardId = "EVIM-123"
   │  2. save(conversation)
   │  3. slaMetricsService.onJiraLinked(jiraKey, pendingVendor)
-  │     → Inicia rastreamento de SLA
+  │     → Starts SLA tracking
   │
   ▼
-CONSULTAS
+QUERIES
   │
-  ├─ GET /conversations → lista paginada com filtros (status, ticketId)
-  ├─ GET /conversations/by-provider-assignee/{accountId} → por responsável Jira
-  ├─ GET /conversations/by-provider-unassigned → não atribuídas
-  └─ GET /conversations/ticket/{ticketId}/last-interaction → último e-mail
+  ├─ GET /conversations → paginated list with filters (status, ticketId)
+  ├─ GET /conversations/by-provider-assignee/{accountId} → by Jira assignee
+  ├─ GET /conversations/by-provider-unassigned → unassigned
+  └─ GET /conversations/ticket/{ticketId}/last-interaction → last e-mail
 ```
 
 ---
 
-### 6. Integração com Jira
+### 6. Jira integration
 
-A integração usa **dois mecanismos de autenticação**:
+The integration uses **two authentication mechanisms**:
 
-1. **OAuth2 por usuário** — token individual vinculado via `AtlassianCredentialsFilter` (thread-local). Usado quando o usuário está autenticado e tem token Atlassian válido.
-2. **Basic Auth (service account)** — fallback quando não há OAuth. Configurado via `jira.username` + `jira.api-token`.
+1. **Per-user OAuth2** — individual token bound through `AtlassianCredentialsFilter` (thread-local). Used when the user is authenticated and has a valid Atlassian token.
+2. **Basic Auth (service account)** — fallback when there is no OAuth token. Configured with `jira.username` + `jira.api-token`.
 
 ```
-ProviderApiClient (HTTP client centralizado)
+ProviderApiClient (centralized HTTP client)
   │
-  ├─ Se CredentialsContext tem token OAuth → usa Bearer token
-  └─ Senão → usa Basic Auth (service account)
+  ├─ If CredentialsContext has an OAuth token → uses a Bearer token
+  └─ Otherwise → uses Basic Auth (service account)
 ```
 
-#### Operações/Endpoints Jira
+#### Jira operations/endpoints
 
-| Operação | Endpoint Jira | Serviço |
-|----------|--------------|---------|
-| Buscar issue | `GET /rest/api/3/issue/{key}` | ProviderIssueService |
-| Pesquisar issues (JQL) | `POST /rest/api/3/search/jql` | ProviderIssueService |
-| Atualizar issue | `PUT /rest/api/3/issue/{key}` | ProviderIssueUpdateService |
-| Transição de status | `POST /rest/api/3/issue/{key}/transitions` | ProviderIssueUpdateService |
-| Listar transições | `GET /rest/api/3/issue/{key}/transitions` | ProviderTransitionService |
-| Adicionar comentário | `POST /rest/api/3/issue/{key}/comment` | ProviderCommentService |
-| Usuários atribuíveis | `GET /rest/api/3/user/assignable/search` | ProviderUserService |
-| Usuário atual | `GET /rest/api/3/myself` | ProviderUserService |
+| Operation | Jira endpoint | Service |
+|-----------|--------------|---------|
+| Get issue | `GET /rest/api/3/issue/{key}` | ProviderIssueService |
+| Search issues (JQL) | `POST /rest/api/3/search/jql` | ProviderIssueService |
+| Update issue | `PUT /rest/api/3/issue/{key}` | ProviderIssueUpdateService |
+| Status transition | `POST /rest/api/3/issue/{key}/transitions` | ProviderIssueUpdateService |
+| List transitions | `GET /rest/api/3/issue/{key}/transitions` | ProviderTransitionService |
+| Add comment | `POST /rest/api/3/issue/{key}/comment` | ProviderCommentService |
+| Assignable users | `GET /rest/api/3/user/assignable/search` | ProviderUserService |
+| Current user | `GET /rest/api/3/myself` | ProviderUserService |
 
-#### Construção de JQL
+#### JQL construction
 
 ```
 Base: project = {projectKey}
 
-Filtros opcionais:
+Optional filters:
   + AND status = "{status}"
   + AND assignee = "{accountId}"
   + AND assignee = EMPTY
@@ -758,13 +759,13 @@ Filtros opcionais:
 ORDER BY created DESC
 ```
 
-#### PATCH de Issue
+#### Issue PATCH
 
-`PATCH /card/{issueKey}` suporta atualização parcial:
+`PATCH /card/{issueKey}` supports partial updates:
 
 ```json
 {
-  "summary": "Novo título",
+  "summary": "New title",
   "vendorTicket": "12345678",
   "priorityId": "3",
   "assigneeAccountId": "5f7...",
@@ -772,11 +773,11 @@ ORDER BY created DESC
 }
 ```
 
-Campos `null` são ignorados. `assigneeAccountId = ""` remove o responsável.
+`null` fields are ignored. `assigneeAccountId = ""` removes the assignee.
 
 ---
 
-### 7. Fluxo OAuth2 Atlassian
+### 7. Atlassian OAuth2 flow
 
 ```
 ┌──────────┐     ┌──────────────┐     ┌─────────────────┐
@@ -814,7 +815,7 @@ Campos `null` são ignorados. `assigneeAccountId = ""` remove o responsável.
      │                  │  [{ id: cloudId }]   │
      │                  │◀─────────────────────┤
      │                  │                      │
-     │                  │  Salva token no DB:  │
+     │                  │  Saves token in DB:  │
      │                  │  keycloakSub →       │
      │                  │  { token, cloudId }  │
      │                  │                      │
@@ -826,9 +827,9 @@ Campos `null` são ignorados. `assigneeAccountId = ""` remove o responsável.
      │                  │                      │
 ```
 
-**Refresh automático:** O `AtlassianCredentialsFilter` verifica validade do token a cada request. Se expirado (com margem de 5 min), tenta refresh. Se refresh falhar, responde `401` com header `X-Atlassian-Reauth: required` — o frontend detecta e pede ao usuário para re-vincular.
+**Automatic refresh:** `AtlassianCredentialsFilter` checks the token's validity on every request. If it is expired (with a 5-minute margin), it tries to refresh. If the refresh fails, it responds `401` with the `X-Atlassian-Reauth: required` header — the frontend detects it and asks the user to link again.
 
-**Scopes solicitados:**
+**Requested scopes:**
 
 ```
 read:jira-work
@@ -837,88 +838,86 @@ read:jira-user
 read:board-scope:jira-software
 read:sprint:jira-software
 read:issue:jira-software
-offline_access (para refresh tokens)
+offline_access (for refresh tokens)
 ```
 
 ---
 
-### 8. Métricas de SLA
+### 8. SLA metrics
 
-O sistema rastreia com a responsabilidade em cada ticket: o fornecedor (VENDOR) ou a equipe interna (INTERNAL). Isso permite calcular tempos de resposta e gargalos.
-
-
+The system tracks who is responsible for each ticket: the vendor (VENDOR) or the internal team (INTERNAL). This makes it possible to compute response times and bottlenecks.
 
 ```
-                   E-mail do fornecedor chega
+                   Vendor e-mail arrives
                    onVendorEmailReceived()
     ┌──────────┐ ─────────────────────────────▶ ┌──────────┐
     │  VENDOR  │                                │ INTERNAL │
-    │ (aguarda │ ◀───────────────────────────── │ (nossa   │
-    │ resposta)│   E-mail de resposta enviado   │  vez de  │
-    └──────────┘   onInternalReply()             │  agir)   │
+    │ (waiting │ ◀───────────────────────────── │  (our    │
+    │ on reply)│      Reply e-mail sent         │  turn to │
+    └──────────┘      onInternalReply()         │   act)   │
          │                                      └──────────┘
          │                                           │
-         │         Issue resolvido no Jira           │
-         │         onIssueResolved()                 │
+         │          Issue resolved in Jira           │
+         │          onIssueResolved()                │
          └──────────────▶ CLOSED ◀───────────────────┘
 ```
 
-#### Eventos que disparam transições
+#### Events that trigger transitions
 
-| Evento | Transição | Quem dispara |
-|--------|-----------|-------------|
-| `onJiraLinked(key, pending)` | → VENDOR ou INTERNAL (inicial) | `ConversationService` ao vincular Jira |
-| `onVendorEmailReceived(key)` | VENDOR → INTERNAL | `EmailProcessingService` ao processar e-mail externo |
-| `onInternalReply(key)` | INTERNAL → VENDOR | `EmailSendService` ao enviar resposta ao fornecedor |
-| `onIssueResolved(key)` | Qualquer → CLOSED | `SlaPollingScheduler` ao detectar issue "done" |
+| Event | Transition | Triggered by |
+|-------|-----------|-------------|
+| `onJiraLinked(key, pending)` | → VENDOR or INTERNAL (initial) | `ConversationService` when linking Jira |
+| `onVendorEmailReceived(key)` | VENDOR → INTERNAL | `EmailProcessingService` when processing an external e-mail |
+| `onInternalReply(key)` | INTERNAL → VENDOR | `EmailSendService` when sending a reply to the vendor |
+| `onIssueResolved(key)` | Any → CLOSED | `SlaPollingScheduler` when it detects a "done" issue |
 
-#### Métricas Calculadas
+#### Computed metrics
 
-| Métrica | Cálculo |
-|---------|---------|
-| `vendorTimeSeconds` | Soma de todos os períodos com ownerType=VENDOR |
-| `firstResponseSeconds` | Duração do primeiro período VENDOR (até primeira resposta) |
-| `pingPongScore` | Número total de transições de estado |
-| `currentOwner` | Owner do log ativo (endAt=null), ou "CLOSED" |
-| `trackingSince` | Data do primeiro log |
+| Metric | Calculation |
+|--------|-------------|
+| `vendorTimeSeconds` | Sum of every period with ownerType=VENDOR |
+| `firstResponseSeconds` | Duration of the first VENDOR period (until the first reply) |
+| `pingPongScore` | Total number of state transitions |
+| `currentOwner` | Owner of the active log (endAt=null), or "CLOSED" |
+| `trackingSince` | Date of the first log |
 
-**Endpoint:** `GET /metrics?sprintId={optional}` — retorna métricas por ticket + resumo agregado.
+**Endpoint:** `GET /metrics?sprintId={optional}` — returns per-ticket metrics + an aggregated summary.
 
 ---
 
-### 9. Polling de Resolução de Issues
+### 9. Issue resolution polling
 
-`SlaPollingScheduler` roda a cada 10 minutos e verifica se issues Jira foram resolvidos:
+`SlaPollingScheduler` runs every 10 minutes and checks whether Jira issues were resolved:
 
 ```
 SlaPollingScheduler.checkResolvedIssues()
   │
-  ├─ Obtém todas as jiraKeys ativas no SlaMetricsService
+  ├─ Gets every active jiraKey from SlaMetricsService
   │
-  └─ Para cada key:
+  └─ For each key:
       ├─ GET /rest/api/3/issue/{key}
-      ├─ Extrai status.name
-      ├─ Se status ∈ {"done", "closed", "resolved", "concluído"}:
+      ├─ Extracts status.name
+      ├─ If status ∈ {"done", "closed", "resolved", "concluído"}:
       │   └─ slaMetricsService.onIssueResolved(key)
-      │      (encerra ownership ativo)
-      └─ Se erro → loga e continua
+      │      (closes the active ownership)
+      └─ On error → logs and continues
 ```
 
 ---
 
-## Segurança
+## Security
 
-### Autenticação
+### Authentication
 
 - **JWT** via Keycloak (OAuth2 Resource Server)
-- Toda request (exceto endpoints públicos) requer header `Authorization: Bearer {token}`
-- O token é validado com o `issuer-uri` configurado
+- Every request (except public endpoints) requires the `Authorization: Bearer {token}` header
+- The token is validated against the configured `issuer-uri`
 
-### Credenciais Atlassian
+### Atlassian credentials
 
-- Tokens OAuth2 por usuário, armazenados no banco vinculados ao `keycloakSub`
-- Refresh automático no filter (5 min antes da expiração)
-- Fallback para service account (Basic Auth) se não houver token OAuth
+- Per-user OAuth2 tokens, stored in the database and bound to the `keycloakSub`
+- Automatic refresh in the filter (5 minutes before expiry)
+- Falls back to the service account (Basic Auth) when there is no OAuth token
 
 ---
 
@@ -926,101 +925,101 @@ SlaPollingScheduler.checkResolvedIssues()
 
 ### E-mails (`/email`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/email` | Lista e-mails paginados |
-| GET | `/email/search?subject=` | Busca por assunto |
-| GET | `/email/conversation/{id}` | E-mails de uma conversa |
-| GET | `/email/by-ticket/{ticketId}` | E-mails por ticket do fornecedor |
-| GET | `/email/by-ticket/{ticketId}/thread-messages` | Thread messages parseadas |
-| POST | `/email/ingest` | Trigger manual de ingestão |
-| POST | `/email/send` | Envia e-mail |
-| GET | `/email/{emailId}/attachments` | Lista anexos |
-| GET | `/email/attachments/{id}/download` | Download de anexo |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/email` | Paginated e-mail list |
+| GET | `/email/search?subject=` | Search by subject |
+| GET | `/email/conversation/{id}` | E-mails of a conversation |
+| GET | `/email/by-ticket/{ticketId}` | E-mails by vendor ticket |
+| GET | `/email/by-ticket/{ticketId}/thread-messages` | Parsed thread messages |
+| POST | `/email/ingest` | Manual ingestion trigger |
+| POST | `/email/send` | Sends an e-mail |
+| GET | `/email/{emailId}/attachments` | Lists attachments |
+| GET | `/email/attachments/{id}/download` | Downloads an attachment |
 
-### Conversas (`/conversations`)
+### Conversations (`/conversations`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/conversations` | Lista com filtros (status, ticketId), paginada |
-| PATCH | `/conversations/{id}/link-jira` | Vincula a issue Jira |
-| GET | `/conversations/by-provider-assignee/{accountId}` | Por responsável Jira |
-| GET | `/conversations/by-provider-unassigned` | Sem responsável |
-| GET | `/conversations/ticket/{ticketId}/last-interaction` | Última interação |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/conversations` | Paginated list with filters (status, ticketId) |
+| PATCH | `/conversations/{id}/link-jira` | Links to a Jira issue |
+| GET | `/conversations/by-provider-assignee/{accountId}` | By Jira assignee |
+| GET | `/conversations/by-provider-unassigned` | Unassigned |
+| GET | `/conversations/ticket/{ticketId}/last-interaction` | Last interaction |
 
 ### Jira (`/card`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/card/{issueKey}` | Dados do issue |
-| GET | `/card/{issueKey}/raw` | JSON bruto do Jira |
-| POST | `/card/{issueKey}/comment` | Adicionar comentário |
-| GET | `/card/{issueKey}/transitions` | Transições disponíveis |
-| PATCH | `/card/{issueKey}` | Atualizar issue |
-| GET | `/card/users/assignable/project/{key}` | Usuários atribuíveis |
-| GET | `/card/users/assignable/default` | Usuários do projeto padrão |
-| GET | `/card/sprints` | Sprints ativas |
-| GET | `/card/statuses` | Status do projeto |
-| GET | `/card/priorities` | Prioridades |
-| GET | `/card/search` | Pesquisa com filtros |
-| GET | `/card/attachment/{attachmentId}/content` | Proxy de download de anexo Jira |
-| GET | `/card/starred` | Issues favoritos do usuário |
-| GET | `/card/starred/keys` | Apenas keys dos favoritos |
-| PUT | `/card/{issueKey}/star` | Favoritar issue |
-| DELETE | `/card/{issueKey}/star` | Desfavoritar issue |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/card/{issueKey}` | Issue data |
+| GET | `/card/{issueKey}/raw` | Raw Jira JSON |
+| POST | `/card/{issueKey}/comment` | Adds a comment |
+| GET | `/card/{issueKey}/transitions` | Available transitions |
+| PATCH | `/card/{issueKey}` | Updates an issue |
+| GET | `/card/users/assignable/project/{key}` | Assignable users |
+| GET | `/card/users/assignable/default` | Users of the default project |
+| GET | `/card/sprints` | Active sprints |
+| GET | `/card/statuses` | Project statuses |
+| GET | `/card/priorities` | Priorities |
+| GET | `/card/search` | Filtered search |
+| GET | `/card/attachment/{attachmentId}/content` | Jira attachment download proxy |
+| GET | `/card/starred` | User's starred issues |
+| GET | `/card/starred/keys` | Starred issue keys only |
+| PUT | `/card/{issueKey}/star` | Stars an issue |
+| DELETE | `/card/{issueKey}/star` | Unstars an issue |
 
-### Métricas (`/metrics`)
+### Metrics (`/metrics`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/metrics?sprintId=` | Métricas de SLA |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/metrics?sprintId=` | SLA metrics |
 
 ### Admin (`/admin`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/admin/config` | Todas as configs |
-| POST | `/admin/config` | Criar config |
-| GET | `/admin/config/public` | Configs públicas (sem auth) |
-| PUT | `/admin/config/{key}` | Atualizar config |
-| DELETE | `/admin/config/{id}` | Remover config |
-| POST | `/admin/ingest` | Trigger manual de ingestão de e-mails |
-| GET | `/admin/parser-metrics` | Snapshot dos contadores do parser |
-| DELETE | `/admin/parser-metrics` | Reset dos contadores |
-| POST | `/admin/reparse-threads` | Inicia reparse assíncrono (body opcional `{conversationIds:[…], emailIds:[…]}` para escopo) |
-| DELETE | `/admin/reparse-threads` | Cancela reparse em andamento |
-| GET | `/admin/reparse-threads/status` | Progresso (running, processed, total, progress, newlyParsed, failedEmails, fallbackEmails, status) |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/admin/config` | All settings |
+| POST | `/admin/config` | Creates a setting |
+| GET | `/admin/config/public` | Public settings (no auth) |
+| PUT | `/admin/config/{key}` | Updates a setting |
+| DELETE | `/admin/config/{id}` | Removes a setting |
+| POST | `/admin/ingest` | Manual e-mail ingestion trigger |
+| GET | `/admin/parser-metrics` | Parser counter snapshot |
+| DELETE | `/admin/parser-metrics` | Resets the counters |
+| POST | `/admin/reparse-threads` | Starts an async reparse (optional body `{conversationIds:[…], emailIds:[…]}` for scope) |
+| DELETE | `/admin/reparse-threads` | Cancels the running reparse |
+| GET | `/admin/reparse-threads/status` | Progress (running, processed, total, progress, newlyParsed, failedEmails, fallbackEmails, status) |
 
 ### Atlassian OAuth (`/auth/atlassian`)
 
-| Método | Path | Descrição |
-|--------|------|-----------|
-| GET | `/auth/atlassian/initiate` | Inicia fluxo OAuth |
-| GET | `/auth/atlassian/callback` | Callback (público) |
-| GET | `/auth/atlassian/status` | Status de vinculação |
-| DELETE | `/auth/atlassian` | Desvincular conta |
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/auth/atlassian/initiate` | Starts the OAuth flow |
+| GET | `/auth/atlassian/callback` | Callback (public) |
+| GET | `/auth/atlassian/status` | Linking status |
+| DELETE | `/auth/atlassian` | Unlinks the account |
 
 ---
 
-## Variáveis de Ambiente
+## Environment variables
 
-| Variável | Obrigatória | Descrição |
-|----------|:-----------:|-----------|
-| `DB_USERNAME` / `DB_PASSWORD` | Não | Credenciais do PostgreSQL (default: `evim` / `evim`) |
-| `GRAPH_MOCK_ENABLED` | Não | `true` desliga o Microsoft Graph (default do arquivo: `true`) |
-| `OIDC_ISSUER_URI` | Sim | URL do Keycloak realm |
-| `GRAPH_TENANT_ID` | Sim | Azure AD Tenant ID |
-| `GRAPH_CLIENT_ID` | Sim | Azure AD App Registration Client ID |
-| `GRAPH_CLIENT_SECRET` | Sim | Azure AD App Registration Secret |
-| `GRAPH_MAILBOX_USER_ID` | Sim | ID ou UPN da caixa compartilhada |
-| `GRAPH_FOLDER_ID` | Sim | ID da pasta a monitorar (Inbox, etc.) |
-| `ATLASSIAN_CLIENT_ID` | Sim | Atlassian OAuth2 Client ID |
-| `ATLASSIAN_CLIENT_SECRET` | Sim | Atlassian OAuth2 Client Secret |
-| `ATLASSIAN_REDIRECT_URI` | Não | Callback URL (default: `http://localhost:8080/auth/atlassian/callback`) |
-| `ATLASSIAN_FRONTEND_URL` | Não | URL do frontend (default: `http://localhost:5173`) |
-| `jira_base_url` | Sim* | URL base do Jira (service account) |
-| `jira_username` | Sim* | Usuário do Jira (service account) |
-| `jira_api_token` | Sim* | API token do Jira (service account) |
-| `jira_project_key` | Sim* | Chave do projeto Jira (ex: `EVIM`) |
+| Variable | Required | Description |
+|----------|:--------:|-------------|
+| `DB_USERNAME` / `DB_PASSWORD` | No | PostgreSQL credentials (default: `evim` / `evim`) |
+| `GRAPH_MOCK_ENABLED` | No | `true` switches Microsoft Graph off (file default: `true`) |
+| `OIDC_ISSUER_URI` | Yes | Keycloak realm URL |
+| `GRAPH_TENANT_ID` | Yes | Azure AD tenant ID |
+| `GRAPH_CLIENT_ID` | Yes | Azure AD app registration client ID |
+| `GRAPH_CLIENT_SECRET` | Yes | Azure AD app registration secret |
+| `GRAPH_MAILBOX_USER_ID` | Yes | ID or UPN of the shared mailbox |
+| `GRAPH_FOLDER_ID` | Yes | ID of the folder to watch (Inbox, etc.) |
+| `ATLASSIAN_CLIENT_ID` | Yes | Atlassian OAuth2 client ID |
+| `ATLASSIAN_CLIENT_SECRET` | Yes | Atlassian OAuth2 client secret |
+| `ATLASSIAN_REDIRECT_URI` | No | Callback URL (default: `http://localhost:8080/auth/atlassian/callback`) |
+| `ATLASSIAN_FRONTEND_URL` | No | Frontend URL (default: `http://localhost:5173`) |
+| `jira_base_url` | Yes* | Jira base URL (service account) |
+| `jira_username` | Yes* | Jira user (service account) |
+| `jira_api_token` | Yes* | Jira API token (service account) |
+| `jira_project_key` | Yes* | Jira project key (e.g. `EVIM`) |
 
-\* Jira obrigatório se não usar OAuth2 individual por usuário.
+\* Jira is required if per-user OAuth2 is not used.
