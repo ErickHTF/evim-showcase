@@ -37,7 +37,7 @@ each conversation to a Jira ticket and tracks the SLA of whoever holds the ball
   </tr>
 </table>
 
-The UI is in Portuguese (Brazil).
+The UI is in Portuguese (Brazil). Screenshots were taken from a local instance with fictitious data and a mocked Jira.
 
 ## Highlights
 
