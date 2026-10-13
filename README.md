@@ -8,6 +8,8 @@ the next response.
 The internal product continued with a different architecture, including direct
 Zendesk integration. Company names, real data and infrastructure were removed.
 
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4-6DB33F?logo=springboot&logoColor=white) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?logo=postgresql&logoColor=white)
+
 [Run and build](#run-and-build) · [Development guide](docs/development.md) ·
 [Frontend reference](docs/frontend.md) · [Backend reference](docs/backend.md)
 
